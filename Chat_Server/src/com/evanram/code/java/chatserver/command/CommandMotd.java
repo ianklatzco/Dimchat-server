@@ -4,6 +4,9 @@ import com.evanram.code.java.chatserver.Commander;
 import com.evanram.code.java.chatserver.RunCommand;
 import com.evanram.code.java.chatserver.Server;
 
+/**
+ * Command to get the server's message of the day (MOTD).
+ */
 public class CommandMotd implements RunCommand
 {
 
