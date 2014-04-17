@@ -33,7 +33,7 @@ public class CommandMute implements RunCommand
 		{
 			if(args.length > 0)
 			{
-				for(SessionWorker w : Server.getClientWorkers())
+				for(SessionWorker w : Server.getSessionWorkers())
 				{
 					if(w.getName().equalsIgnoreCase(args[0]))
 					{

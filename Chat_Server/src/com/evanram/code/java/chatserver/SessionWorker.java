@@ -18,74 +18,127 @@ public class SessionWorker implements Runnable, Commander
 	private int spamWarnCount = 1;
 	private boolean silenced = false;
 	
+	/**
+	 * SessionWorker constructor, takes a Socket input.
+	 * Every client that connects has a SessionWorker (run in a separate Thread).
+	 * @param client
+	 */
 	public SessionWorker(Socket client)
 	{
 		this.client = client;
 		this.ip = client.getInetAddress().toString();
 	}
 	
+	/**
+	 * Get the Socket of this client.
+	 * @return
+	 */
 	public Socket getClient()
 	{
 		return client;
 	}
 	
+	/**
+	 * Formats SessionWorker: "[ip:port (name)]"
+	 */
 	@Override
 	public String toString()
 	{
 		return "[" + getIp() + ":" + getPort() + "(" + getName() + ")]";
 	}
 	
+	/**
+	 * Get the IP of this client.
+	 * @return
+	 */
 	public String getIp()
 	{
 		return getClient().getInetAddress().toString();
 	}
 	
+	/**
+	 * Get the port of this client.
+	 * @return
+	 */
 	public int getPort()
 	{
 		return getClient().getPort();
 	}
 	
+	/**
+	 * Send a message to this client's client application (no one else sees this).
+	 */
 	public void sendMessage(String message)
 	{
 		clientOut.println(message);
 	}
 	
+	/**
+	 * Assigns a nickname to this client.
+	 */
 	public void setName(String name)
 	{
 		this.name = name;
 	}
 	
+	/**
+	 * Get the amount of time that must be waited before sending a new message.
+	 * @return
+	 */
 	public int getMessageTimelimitMillisec()
 	{
 		return messageTimelimitMillisec;
 	}
 	
+	/**
+	 * Gets the nickname of this client.
+	 */
 	public String getName()
 	{
 		return name;
 	}
 	
+	/**
+	 * Return true if the list of operator IPs in Server contains this client's IP.
+	 */
 	public boolean isOp()
 	{
 		return Server.getOperatorIps().contains(getClient().getInetAddress().toString());
 	}
 	
+	/**
+	 * Get if the client is silenced (muted) or not.
+	 * @return
+	 */
 	public boolean isSilenced()
 	{
 		return silenced;
 	}
 	
+	/**
+	 * Set the silence (mute) mode of this client.
+	 * @param mode
+	 */
 	public void setSilenced(boolean mode)
 	{
 		silenced = mode;
 	}
 	
+	/**
+	 * Return true if the list of banned IPs in Server contains this client's IP.
+	 */
 	public boolean isBlacklisted()
 	{
 		return Server.getBlacklistedIps().contains(getClient().getInetAddress().toString());
 	}
 	
-	//detect possible incoming spam
+	/**
+	 * Try to detect possible incoming spam from the client.
+	 * Operators are expempt from the spam check.
+	 * @param currentMessage
+	 * @param previousMessage
+	 * @return
+	 */
 	public boolean mightBeSpam(String currentMessage, String previousMessage)
 	{
 		//operators get exempt from this
@@ -127,6 +180,9 @@ public class SessionWorker implements Runnable, Commander
 		return false;
 	}
 	
+	/**
+	 * Constantly check for new messages and handle client's input to the server.
+	 */
 	public void run()
 	{
 		BufferedReader in = null;
@@ -151,7 +207,7 @@ public class SessionWorker implements Runnable, Commander
 				
 				if(line == null)	//notify that this client is disconnected
 				{
-					Server.getClientWorkers().remove(this);
+					Server.getSessionWorkers().remove(this);
 					Message.broadcast(this.getName() + " has disconnected.");
 					break;
 				}

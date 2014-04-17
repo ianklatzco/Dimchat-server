@@ -22,7 +22,7 @@ public class Server
 	
 	public static ServerSocket server;
 	private static ArrayList<Socket> connectedClients = new ArrayList<Socket>();
-	public static ArrayList<SessionWorker> clientWorkers = new ArrayList<SessionWorker>();
+	public static ArrayList<SessionWorker> sessionWorkers = new ArrayList<SessionWorker>();
 	
 	private static ArrayList<String> operatorIps = new ArrayList<String>();	//FIXME: not workin' (at least for localhost)
 	private static ArrayList<String> blacklistedIps = new ArrayList<String>();
@@ -35,6 +35,12 @@ public class Server
 	
 	private static ServerCommand serverCommandInstance;
 	
+	/**
+	 * Server constructor.
+	 * Loads all files in /chatserver/~ (relative to jar file's path).
+	 * Register commands to their RunCommand Object.
+	 * Start socket connection.
+	 */
 	public Server()
 	{
 		try
@@ -80,6 +86,10 @@ public class Server
 		initializeConnections();
 	}
 	
+	/**
+	 * Parse command line arguments, then call Server() constructor.
+	 * @param args
+	 */
 	public static void main(String... args)
 	{
 		if(args.length > 0)	//try define port
@@ -97,6 +107,10 @@ public class Server
 		new Server();
 	}
 	
+	/**
+	 * Every command must be 'registered' to a RunCommand Object.
+	 * addCommand(String, RunCommand) is to be used multiple times here.
+	 */
 	public void registerCommands()
 	{
 		addCommand("help", new CommandHelp());
@@ -110,6 +124,10 @@ public class Server
 		//addCommand("kick", new CommandKick()); ***FIXME FIXME FIXME***
 	}
 	
+	/**
+	 * Create server socket, then start accepting client connections in a new Thread.
+	 * Finally, accept server commands from console.
+	 */
 	public static void initializeConnections()
 	{
 		try
@@ -129,7 +147,12 @@ public class Server
 		serverCommandInstance = new ServerCommand(Message.nextInputLine());
 	}
 	
-	private static String getDataFolder()	//Referenced code from: http://stackoverflow.com/a/11166880
+	/**
+	 * Get the path to this program's jar file.
+	 * Referenced from: http://stackoverflow.com/a/11166880
+	 * @return
+	 */
+	private static String getDataFolder()
 	{
 		String parentPath = "";
 		try
@@ -146,6 +169,12 @@ public class Server
 		return parentPath + File.separator + "chatserver/";
 	}
 	
+	/**
+	 * For each IP in operators.txt, add it to the operatorIps ArrayList.
+	 * If the first character of each entry is not '/', add it.
+	 * (IP must start with '/' or else server does not recognize the String as an IP)
+	 * @throws IOException
+	 */
 	private static void loadOperators() throws IOException
 	{
 		loadTextFileToObject("operators.txt", operatorIps);
@@ -157,6 +186,12 @@ public class Server
 		}
 	}
 	
+	/**
+	 * For each IP in blacklist.txt, add it to the blacklistedIps ArrayList.
+	 * If the first character of each entry is not '/', add it.
+	 * (IP must start with '/' or else server does not recognize the String as an IP)
+	 * @throws IOException
+	 */
 	private static void loadBlacklist() throws IOException
 	{
 		loadTextFileToObject("blacklist.txt", blacklistedIps);
@@ -168,6 +203,15 @@ public class Server
 		}
 	}
 	
+	/**
+	 * Read from file in /chatserver/fileName to Object.
+	 * If Object instanceof String, separate it with newline characters.
+	 * If Object is an instanceof a List, add each line to a new Object in the List.
+	 * @param fileName
+	 * @param data
+	 * @return
+	 * @throws IOException
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static Object loadTextFileToObject(String fileName, Object data) throws IOException
 	{
@@ -204,6 +248,11 @@ public class Server
 		return data;
 	}
 
+	/**
+	 * Reads unhashed password in superop-password.txt and SHA-256 hashes it to superOperatorPassword.
+	 * @throws IOException
+	 * @throws NoSuchAlgorithmException
+	 */
 	private static void hashSuperOperatorPassword() throws IOException, NoSuchAlgorithmException
 	{
 		String unhashedPswd =
@@ -214,6 +263,11 @@ public class Server
 		Server.superOperatorPassword = new String(pswdDigest.digest(unhashedPswd.getBytes("UTF-8")));
 	}
 	
+	/**
+	 * SHA-256 hash parameter. Return true if parameter matches superOperatorPassword.
+	 * @param password
+	 * @return
+	 */
 	public static boolean matchesSuperOperatorPassword(String password)
 	{
 		try
@@ -232,52 +286,94 @@ public class Server
 		
 	}
 	
+	/**
+	 * Get the port this server is running on.
+	 * @return
+	 */
 	public static int getPort()
 	{
 		return port;
 	}
 	
+	/**
+	 * If motd.txt is not empty, return the contents of that. 
+	 * Else, return default message of the day.
+	 * @return
+	 */
 	public static String getMotd()
 	{
 		return messageOfTheDay.equals("") ? 
 				"Welcome to the Server! (Operators, change MOTD in /chatserver/motd.txt)" : messageOfTheDay;
 	}
 	
+	/**
+	 * Get all client Socket connections to the server.
+	 * @return
+	 */
 	public static ArrayList<Socket> getConnections()
 	{
 		return connectedClients;
 	}
 	
-	public static ArrayList<SessionWorker> getClientWorkers()
+	/**
+	 * Get all connected SessionWorkers (clients).
+	 * @return
+	 */
+	public static ArrayList<SessionWorker> getSessionWorkers()
 	{
-		return clientWorkers;
+		return sessionWorkers;
 	}
 	
+	/**
+	 * Get the ArrayList of IPs who are operators.
+	 * @return
+	 */
 	public static ArrayList<String> getOperatorIps()
 	{
 		return operatorIps;
 	}
 	
+	/**
+	 * Get the ArrayList of IPs who are banned.
+	 * @return
+	 */
 	public static ArrayList<String> getBlacklistedIps()
 	{
 		return blacklistedIps;
 	}
 	
+	/**
+	 * Gets instance of ServerCommand (the console).
+	 * @return
+	 */
 	public static ServerCommand getServerCommandInstance()
 	{
 		return serverCommandInstance;
 	}
 	
+	/**
+	 * Registers a command.
+	 * Add a command to the registeredCommands HashMap.
+	 * @param command
+	 * @param cmdObject
+	 */
 	public static void addCommand(String command, RunCommand cmdObject)
 	{
 		registeredCommands.put(command, cmdObject);
 	}
 	
+	/**
+	 * Get String, RunCommand HashMap of commands that have been registered.
+	 * @return
+	 */
 	public static HashMap<String, RunCommand> getRegisteredCommands()
 	{
 		return registeredCommands;
 	}
 	
+	/**
+	 * Stops the server.
+	 */
 	public static void stopServer()
 	{
 		try
@@ -292,6 +388,9 @@ public class Server
 		}
 	}
 	
+	/**
+	 * Try to safely close server socket.
+	 */
 	protected void finalize()
 	{
 		try

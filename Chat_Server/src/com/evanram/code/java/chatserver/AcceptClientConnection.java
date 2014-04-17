@@ -5,6 +5,9 @@ import java.net.Socket;
 
 public class AcceptClientConnection implements Runnable
 {
+	/**
+	 * Create a new SessionWorker each time the server receives a new client connection.
+	 */
 	@Override
 	public void run()
 	{
@@ -31,7 +34,7 @@ public class AcceptClientConnection implements Runnable
 					continue;
 				}
 				
-				Server.clientWorkers.add(worker);
+				Server.sessionWorkers.add(worker);
 				new Thread(worker).start();
 				
 				Message.logInfo("Client connection from: " + 

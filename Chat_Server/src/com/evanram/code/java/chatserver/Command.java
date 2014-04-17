@@ -10,6 +10,12 @@ public class Command
 	private String[] args;
 	private HashMap<String, RunCommand> registeredCommands = Server.getRegisteredCommands();
 	
+	/**
+	 * Command constructor. The commander is whoever sent the command.
+	 * Processes command.
+	 * @param commander
+	 * @param command
+	 */
 	public Command(Commander commander, String command)
 	{
 		this.commander = commander;
@@ -18,6 +24,10 @@ public class Command
 		processCommand();
 	}
 	
+	/**
+	 * Call formatCommandString() to clean up the command String.
+	 * If the Server's registered commands contains the command, call its execute(Commander, String[]) method.
+	 */
 	private void processCommand()
 	{
 		formatCommandString();
@@ -32,6 +42,9 @@ public class Command
 		registeredCommands.get(command).execute(commander, args);
 	}
 	
+	/**
+	 * Clean up command String and processArguments().
+	 */
 	private void formatCommandString()
 	{
 		if(command.length() > 1)
@@ -45,6 +58,9 @@ public class Command
 		command = command.toLowerCase();
 	}
 
+	/**
+	 * Generates an argument String array (each split by a space).
+	 */
 	private void processArguments()
 	{
 		command = command.replace("\\s+", "");

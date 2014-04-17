@@ -40,7 +40,7 @@ public class CommandKick implements RunCommand
 				String name = args[0];
 				String ip = args[0].charAt(0) == '/' ? args[0] : "/" + args[0];
 				
-				for(SessionWorker w : Server.getClientWorkers())
+				for(SessionWorker w : Server.getSessionWorkers())
 				{
 					if(w.getName().equalsIgnoreCase(name) || w.getClient().getInetAddress().toString().equals(ip))
 					{

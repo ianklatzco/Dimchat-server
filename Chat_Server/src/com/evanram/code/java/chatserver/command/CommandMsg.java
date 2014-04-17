@@ -31,7 +31,7 @@ public class CommandMsg implements RunCommand
 	{
 		if(args.length > 1)
 		{
-			for(SessionWorker w : Server.getClientWorkers())
+			for(SessionWorker w : Server.getSessionWorkers())
 			{
 				if(w.getName().equalsIgnoreCase(args[0]))
 				{

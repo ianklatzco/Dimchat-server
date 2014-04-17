@@ -30,7 +30,7 @@ public class CommandList implements RunCommand
 	public boolean execute(Commander commander, String[] args)
 	{
 		String formattedMessage = "Online: ";
-		for(SessionWorker w : Server.getClientWorkers())
+		for(SessionWorker w : Server.getSessionWorkers())
 		{
 			formattedMessage = formattedMessage + w.getName() + "  ";
 		}

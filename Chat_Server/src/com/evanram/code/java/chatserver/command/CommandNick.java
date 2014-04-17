@@ -34,7 +34,7 @@ public class CommandNick implements RunCommand
 			SessionWorker worker = (SessionWorker)commander;
 			if(args.length > 0)
 			{
-				for(SessionWorker w : Server.getClientWorkers())
+				for(SessionWorker w : Server.getSessionWorkers())
 				{
 					if(args[0].equalsIgnoreCase(w.getName()))
 					{
