@@ -5,6 +5,9 @@ import com.evanram.code.java.chatserver.Commander;
 import com.evanram.code.java.chatserver.RunCommand;
 import com.evanram.code.java.chatserver.Server;
 
+/**
+ * Get the list of all online clients (shows nicknames, not IP addresses).
+ */
 public class CommandList implements RunCommand
 {
 
