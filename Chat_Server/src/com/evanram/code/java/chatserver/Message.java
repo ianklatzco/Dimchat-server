@@ -47,7 +47,7 @@ public class Message
 			try
 			{
 				PrintWriter socketOutput = new PrintWriter(s.getOutputStream(), true);
-				socketOutput.println("[SERVER] " + message);	//send client the message
+				socketOutput.println("[" + Server.getServerCommandInstance().getName() + "] " + message);	//send client the message
 			}
 			catch(IOException e)
 			{

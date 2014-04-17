@@ -33,6 +33,8 @@ public class Server
 	private static ArrayList<String> serverProperties = new ArrayList<String>();
 	private static String superOperatorPassword;
 	
+	private static ServerCommand serverCommandInstance;
+	
 	public Server()
 	{
 		try
@@ -124,7 +126,7 @@ public class Server
 		new Thread(new AcceptClientConnection()).start();	//handle incoming client connections
 		
 		//start accepting commands from the server
-		new ServerCommand(Message.nextInputLine());
+		serverCommandInstance = new ServerCommand(Message.nextInputLine());
 	}
 	
 	private static String getDataFolder()	//Referenced code from: http://stackoverflow.com/a/11166880
@@ -259,6 +261,11 @@ public class Server
 	public static ArrayList<String> getBlacklistedIps()
 	{
 		return blacklistedIps;
+	}
+	
+	public static ServerCommand getServerCommandInstance()
+	{
+		return serverCommandInstance;
 	}
 	
 	public static void addCommand(String command, RunCommand cmdObject)
