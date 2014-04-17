@@ -15,6 +15,8 @@ How would I go about adding my own commands to the server?
 
 Good question! Luckily, commands are pretty simple to set up and register to the server. You'll want to start by creating a class for your command. Let's create a command to get a client's IP address. All commands must implement the interface RunCommand. If you're using and IDE, you should be able to quickly add all abstract methods from it. The execute(Commander, String[] args) method is called when the command is run. The Commander (person sending command) will be sent the usage() String if execute(Commander, String[]) returns false. To register the command, you must modify the method registerCommands() in class Server by adding the new command.
 
+First, create the command. Make sure it implements the RunCommand interface.
+
 ```java
 public class CommandGetIP implements RunCommand
 {
@@ -41,23 +43,23 @@ public class CommandGetIP implements RunCommand
 	public boolean execute(Commander commander, String[] args) //Called when command is run.
 	{
 		if(args.length > 0)
-                {
-                        for(SessionWorker worker : Server.getSessionWorkers())
-                        {
-                                if(worker.getName().equalsIgnoreCase(args[0])
-                                {
-                                        commander.sendMessage("IP of " + args[0] + " is: " + worker.getIp());
-                                        return true;
-                                }
-                        }
+		{
+			for(SessionWorker worker : Server.getSessionWorkers())
+			{
+				if(worker.getName().equalsIgnoreCase(args[0])
+				{
+					commander.sendMessage("IP of " + args[0] + " is: " + worker.getIp());
+					return true;
+				}
+			}
 
-                        commander.sendMessage("No client with that name is online.");
-                }
-                else
-                {
-                        commander.sendMessage("Not enough arguments!")
-                        return false;
-                }
+			commander.sendMessage("No client with that name is online.");
+		}
+		else
+		{
+			commander.sendMessage("Not enough arguments!")
+			return false;
+		}
 
 		return true;
 	}
@@ -65,13 +67,17 @@ public class CommandGetIP implements RunCommand
 }
 ```
 
+Now, register the command.
+
 ```java
-        //Server class
+	//Server class
 	public void registerCommands()
 	{
-                //Other commands up here...
+		//Other commands up here...
 		addCommand("getip", new CommandGetIP()); //Your newly registered command!
 	}
 ```
+
+Done, you've created your own custom command for Dimchat.
 
 Copyright 2014 Evan Ram.
