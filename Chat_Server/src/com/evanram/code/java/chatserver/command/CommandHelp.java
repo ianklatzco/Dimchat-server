@@ -7,6 +7,9 @@ import com.evanram.code.java.chatserver.Commander;
 import com.evanram.code.java.chatserver.RunCommand;
 import com.evanram.code.java.chatserver.Server;
 
+/**
+ * Get the list of all commands registered to the server.
+ */
 public class CommandHelp implements RunCommand
 {
 
