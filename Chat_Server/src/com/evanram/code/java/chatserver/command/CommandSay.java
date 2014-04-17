@@ -3,7 +3,7 @@ package com.evanram.code.java.chatserver.command;
 import com.evanram.code.java.chatserver.Commander;
 import com.evanram.code.java.chatserver.Message;
 import com.evanram.code.java.chatserver.RunCommand;
-
+/*not enough comments*/
 public class CommandSay implements RunCommand
 {
 
