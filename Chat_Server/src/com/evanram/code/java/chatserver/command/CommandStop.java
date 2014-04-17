@@ -5,9 +5,11 @@ import com.evanram.code.java.chatserver.RunCommand;
 import com.evanram.code.java.chatserver.Server;
 import com.evanram.code.java.chatserver.ServerCommand;
 
+/**
+ * Send stop signal to server. Requires super operator password if Commander is a SessionWorker.
+ */
 public class CommandStop implements RunCommand
 {
-
 	@Override
 	public String[] aliases()
 	{
@@ -27,7 +29,7 @@ public class CommandStop implements RunCommand
 	}
 
 	@Override
-	public boolean execute(Commander commander, String[] args)	//TODO: operators with password can shut it down
+	public boolean execute(Commander commander, String[] args)
 	{
 		if(commander.isOp())
 		{
