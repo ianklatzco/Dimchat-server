@@ -5,6 +5,9 @@ import com.evanram.code.java.chatserver.Commander;
 import com.evanram.code.java.chatserver.RunCommand;
 import com.evanram.code.java.chatserver.Server;
 
+/**
+ * Command to change your nickname.
+ */
 public class CommandNick implements RunCommand
 {
 
