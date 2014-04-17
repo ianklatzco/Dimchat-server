@@ -4,6 +4,9 @@ import com.evanram.code.java.chatserver.Commander;
 import com.evanram.code.java.chatserver.Message;
 import com.evanram.code.java.chatserver.RunCommand;
 
+/**
+ * Command for operators to send server messages.
+ */
 public class CommandSay implements RunCommand
 {
 
@@ -39,7 +42,7 @@ public class CommandSay implements RunCommand
 					broadcast = broadcast + " " + s;
 				}
 				
-				Message.broadcast(broadcast);
+				Message.broadcast("[" + commander.getName() + "] " + broadcast);
 			}
 			else
 			{
