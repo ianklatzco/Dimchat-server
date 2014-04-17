@@ -8,6 +8,9 @@ import com.evanram.code.java.chatserver.Message;
 import com.evanram.code.java.chatserver.RunCommand;
 import com.evanram.code.java.chatserver.Server;
 
+/**
+ * Allows operators to kick certain clients from the server.
+ */
 public class CommandKick implements RunCommand
 {
 
