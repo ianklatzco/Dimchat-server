@@ -43,7 +43,10 @@ public class CommandStop implements RunCommand
 			}
 			
 			if(unlocked)
+			{
+				commander.sendMessage("Sending shutdown signal...");
 				Server.stopServer();
+			}
 			else
 				commander.sendMessage("Wrong password. Use super operator password as first argument to stop server.");
 		}
