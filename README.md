@@ -13,7 +13,7 @@ Dim refers to a variety of meanings concerning this application. One, for instan
 
 How would I go about adding my own commands to the server?
 
-Good question! Luckily, commands are pretty simple to set up and register to the server. You'll want to start by creating a class for your command. Let's create a command to get a client's IP address. All commands must implement the interface RunCommand. If you're using and IDE, you should be able to quickly add all abstract methods from it. The execute(Commander, String[] args) method is called when the command is run. The Commander (person sending command) will be sent the usage() String if execute(Commander, String[]) returns false. To register the command, you must modify the method registerCommands() in class Server by adding the new command.
+Good question! Luckily, commands are pretty simple to set up and register to the server. You'll want to start by creating a class for your command. Let's create a command to get a client's IP address. All commands must implement the interface RunCommand. If you're using an IDE, you should be able to quickly add all abstract methods from it. The execute(Commander, String[] args) method is called when the command is run. The Commander (person sending command) will be sent the usage() String if execute(Commander, String[]) returns false. To register the command, you must modify the method registerCommands() in class Server by adding the new command.
 
 First, create the command. Make sure it implements the RunCommand interface.
 
